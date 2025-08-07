@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import heroVideo from '../assets/Futuristic_Training_Space_Video_Generation.mp4';
+import heroVideo from '../../assets/Futuristic_Training_Space_Video_Generation.mp4';
 
 const ResourcesPage = () => {
     const hero3dRef = useRef(null);

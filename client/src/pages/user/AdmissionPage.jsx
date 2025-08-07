@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import heroVideo from '../assets/Futuristic_Training_Space_Video_Generation.mp4';
+import heroVideo from '../../assets/Futuristic_Training_Space_Video_Generation.mp4';
 
 const AdmissionPage = () => {
     const hero3dRef = useRef(null);
