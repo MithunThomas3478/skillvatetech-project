@@ -979,3 +979,317 @@ textarea.form-control {
         font-size: 2rem;
     }
 }
+
+/* --- ✅ DYNAMIC GALLERY PAGE STYLES --- */
+
+/* Add spacing between category sections */
+.gallery-category-section {
+    margin-bottom: 5rem;
+}
+
+.gallery-category-section .section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    border-bottom: 2px solid var(--primary-orange);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+}
+
+/* Container for the "View All" button */
+.view-all-container {
+    text-align: center;
+    margin-top: 2.5rem;
+}
+
+/* Loading and Empty Messages */
+.loading-text, .empty-gallery-message {
+    text-align: center;
+    font-size: 1.5rem;
+    color: var(--text-gray);
+    padding: 4rem 0;
+}
+
+/* Filter Buttons Styling */
+.gallery-filters {
+    text-align: center;
+    margin-bottom: 4rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 2rem;
+}
+
+.filter-btn {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-gray);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--primary-white);
+    border-color: var(--secondary-orange);
+}
+
+.filter-btn.active {
+    background: var(--gradient-orange);
+    color: var(--primary-white);
+    border-color: var(--primary-orange);
+    box-shadow: var(--shadow-orange);
+    transform: scale(1.05);
+}
+
+/* Grid and Item Enhancements */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    aspect-ratio: 4 / 3; /* Maintain a consistent aspect ratio */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--bg-darker);
+}
+
+.gallery-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-item img, .gallery-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease-out;
+}
+
+.gallery-item:hover img, .gallery-item:hover video {
+    transform: scale(1.1);
+}
+
+.gallery-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 60%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+    color: var(--primary-white);
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+    padding: 1.5rem;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+}
+
+.gallery-overlay .icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    font-size: 3.5rem;
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.gallery-item:hover .gallery-overlay .icon {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.gallery-overlay .caption {
+    font-size: 1.1rem;
+    font-weight: 600;
+    transform: translateY(20px);
+    transition: transform 0.4s ease;
+}
+
+.gallery-item:hover .gallery-overlay .caption {
+    transform: translateY(0);
+}
+
+
+/* Upgraded Lightbox Styles */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 1002;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.lightbox.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 85vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-content img, .lightbox-content video {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.lightbox-caption {
+    color: var(--primary-white);
+    background: rgba(0,0,0,0.5);
+    padding: 0.75rem 1.5rem;
+    border-radius: 0 0 10px 10px;
+    margin-top: -5px; /* Adjust to align with bottom of media */
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: -10px;
+    right: 0px;
+    color: var(--primary-white);
+    font-size: 3rem;
+    font-weight: 200;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 1005;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+.lightbox-close:hover {
+    transform: rotate(90deg);
+    color: var(--primary-orange);
+}
+
+
+/* Lightbox Navigation Arrows */
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--primary-white);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1004;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+.lightbox-nav:hover {
+    background: var(--primary-orange);
+    transform: translateY(-50%) scale(1.1);
+}
+.lightbox-nav.prev {
+    left: 2vw;
+}
+.lightbox-nav.next {
+    right: 2vw;
+}
+
+@media(max-width: 768px) {
+    .lightbox-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    .lightbox-nav.prev { left: 10px; }
+    .lightbox-nav.next { right: 10px; }
+
+    .lightbox-close {
+        top: 10px;
+        right: 10px;
+        background: rgba(0,0,0,0.5);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+    }
+}
+
+/* --- ✅ VIEW ALL BUTTON STYLE --- */
+
+.view-all-container {
+    text-align: center;
+    margin-top: 2.5rem;
+}
+
+/* Overriding the default .btn-secondary for this specific context */
+.view-all-container .btn-secondary {
+    background: transparent;
+    color: var(--primary-orange);
+    border: 2px solid var(--primary-orange);
+    padding: 0.8rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease-in-out;
+}
+
+.view-all-container .btn-secondary:hover {
+    background: var(--primary-orange);
+    color: var(--primary-white);
+    border-color: var(--primary-orange);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+}
+.footer-links .footer-link {
+    color: var(--text-gray);
+    text-decoration: none; /* ലിങ്കിന്റെ അടിവര ഒഴിവാക്കുന്നു */
+    transition: color 0.3s ease;
+    display: inline-block; /* 'display: flex' ആവശ്യമില്ലെങ്കിൽ ഇത് മതി */
+    padding: 0; /* ഹെഡറിലെ പോലെ പ്രത്യേക പാഡിംഗ് വേണ്ട */
+}
+
+/* മൗസ് മുകളിൽ വരുമ്പോൾ ഓറഞ്ച് നിറം നൽകുന്നു */
+.footer-links .footer-link:hover {
+    color: var(--primary-orange);
+}
+

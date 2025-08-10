@@ -288,78 +288,689 @@
 .dropdown-menu .icon { 
     width: 16px; 
 }
+/* =================================== */
+/* --- Dashboard Page Specific Styles --- */
+/* =================================== */
 
-/* Dashboard Main Content (Copied from admin.css for completeness) */
-.dashboard-main h1 { font-size: 2rem; font-weight: 800; margin-bottom: 1rem; color: var(--primary-white); }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
-.stat-card { background-color: var(--bg-dark); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-.stat-card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0,0,0,0.2); border-color: var(--primary-orange); }
-.stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+.dashboard-main {
+    padding: 2.5rem; /* പേജിന് ചുറ്റും പാഡിംഗ് */
+}
+
+.dashboard-main h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--primary-white);
+}
+
+/* --- Stat Cards Grid --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background-color: var(--bg-dark);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    border-color: var(--primary-orange);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
 .stat-icon.orange { background-color: rgba(255, 107, 53, 0.1); color: var(--primary-orange); }
 .stat-icon.blue { background-color: rgba(53, 162, 235, 0.1); color: #35a2eb; }
 .stat-icon.green { background-color: rgba(75, 192, 192, 0.1); color: #4bc0c0; }
 .stat-icon.purple { background-color: rgba(153, 102, 255, 0.1); color: #9966ff; }
-.stat-info .stat-number { font-size: 2rem; font-weight: 700; color: var(--primary-white); }
-.stat-info .stat-label { color: var(--text-light-gray); opacity: 0.8; }
-.data-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-.data-card { background-color: var(--bg-dark); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); }
-.data-card h3 { font-size: 1.2rem; margin-bottom: 1rem; color: var(--primary-white); }
-.chart-card { grid-column: 1 / 3; }
-.pie-chart-card { grid-column: 3 / 4; }
-.table-card { grid-column: 1 / 4; }
-.data-table { width: 100%; border-collapse: collapse; }
-.data-table th, .data-table td { padding: 1rem; text-align: left; color: var(--text-light-gray); }
-.data-table thead { border-bottom: 2px solid var(--border-color); }
-.data-table th { font-weight: 600; opacity: 0.8;}
-.data-table tbody tr { border-bottom: 1px solid var(--border-color); transition: background-color 0.2s ease; }
-.data-table tbody tr:last-child { border-bottom: none; }
-.data-table tbody tr:hover { background-color: var(--bg-darker); }
-.status-badge { padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
-.status-badge.pending { background-color: rgba(255, 193, 7, 0.1); color: #ffc107; }
-.status-badge.approved { background-color: rgba(75, 192, 192, 0.1); color: #4bc0c0; }
-.status-badge.rejected { background-color: rgba(255, 99, 132, 0.1); color: #ff6384; }
 
-/* Responsive Adjustments */
-@media(max-width: 1200px) { 
-    .data-grid { grid-template-columns: 1fr; } 
-    .chart-card, .pie-chart-card, .table-card { grid-column: auto; } 
+.stat-info .stat-number {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary-white);
+    line-height: 1;
 }
-@media(max-width: 768px) {
-  .sidebar { 
-      transform: translateX(calc(-1 * var(--sidebar-width))); 
-      position: fixed; 
-  }
-  .sidebar.active { 
-      transform: translateX(0); 
-  }
-  .sidebar.collapsed { 
-      width: var(--sidebar-width); 
-      transform: translateX(calc(-1 * var(--sidebar-width))); 
-  }
-  .main-content-wrapper { 
-      padding-left: 0; 
-  }
-  .dashboard-header { 
-      padding: 0 1.5rem; 
-      border-radius: 0; 
-  }
-  .main-content { 
-      padding: 1.5rem; 
-  }
-  .mobile-overlay { 
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 100%; 
-      background: rgba(0,0,0,0.5); 
-      z-index: 99; 
-      opacity: 0; 
-      visibility: hidden; 
-      transition: opacity 0.3s ease; 
-  }
-  .mobile-overlay.active { 
-      opacity: 1; 
-      visibility: visible; 
-  }
+
+.stat-info .stat-label {
+    color: #a0a0a0;
+    font-size: 0.9rem;
+}
+
+/* --- Data Grid (Charts & Table) --- */
+.data-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* ചാർട്ടിന് 1 ഭാഗം, ടേബിളിന് 2 ഭാഗം */
+    gap: 1.5rem;
+}
+
+.data-card {
+    background-color: var(--bg-dark);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.data-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-white);
+    font-weight: 600;
+}
+
+.pie-chart-card {
+    grid-column: 1 / 2;
+}
+
+.table-card {
+    grid-column: 2 / 3;
+}
+
+.chart-container {
+    position: relative;
+    height: 320px; /* ചാർട്ടിന് അനുയോജ്യമായ ഉയരം */
+}
+
+/* --- Recent Applications Table --- */
+.data-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.data-card .card-header h3 {
+    margin: 0;
+}
+
+.view-all-link {
+    color: var(--primary-orange);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.view-all-link:hover {
+    color: var(--secondary-orange);
+    text-decoration: underline;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text-gray);
+}
+
+.data-table thead {
+    border-bottom: 2px solid var(--border-color);
+}
+
+.data-table th {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #a0a0a0;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease;
+}
+
+.data-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+    background-color: var(--bg-darker);
+}
+
+.data-table td {
+    padding: 0.8rem 1rem;
+    vertical-align: middle;
+    font-size: 0.9rem;
+}
+
+/* --- Status Badges --- */
+.status-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    display: inline-block;
+    border: 1px solid transparent;
+}
+
+.status-badge.pending { background-color: rgba(255, 193, 7, 0.1); color: #ffc107; border-color: rgba(255, 193, 7, 0.3); }
+.status-badge.in-progress { background-color: rgba(53, 162, 235, 0.1); color: #35a2eb; border-color: rgba(53, 162, 235, 0.3); }
+.status-badge.completed { background-color: rgba(75, 192, 192, 0.1); color: #4bc0c0; border-color: rgba(75, 192, 192, 0.3); }
+.status-badge.cancelled { background-color: rgba(255, 99, 132, 0.1); color: #ff6384; border-color: rgba(255, 99, 132, 0.3); }
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1200px) {
+    .data-grid {
+        grid-template-columns: 1fr; /* ചെറിയ സ്ക്രീനുകളിൽ ഒറ്റ കോളം */
+    }
+    .pie-chart-card, .table-card {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-main {
+        padding: 1.5rem;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- ADMIN LOGIN PAGE STYLES --- */
+/* ഈ കോഡ് നിങ്ങളുടെ Admin.css ഫയലിന്റെ അവസാനം ചേർക്കുക */
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--bg-darker, #0a0a0a);
+  font-family: 'Inter', sans-serif; /* ഒരു നല്ല ഫോണ്ട് ചേർക്കുന്നു */
+}
+
+.login-form {
+  background-color: var(--bg-dark, #111111);
+  padding: 2.5rem 3rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.login-form h2 {
+  color: var(--primary-white, #ffffff);
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.login-form p {
+  color: var(--text-light-gray, #a0a0a0);
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  color: var(--text-light-gray, #a0a0a0);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background-color: var(--bg-darker, #0a0a0a);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  color: var(--primary-white, #ffffff);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-orange, #ff6b35);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--gradient-orange, linear-gradient(90deg, #ff6b35, #ff8c42));
+  color: var(--primary-white, #ffffff);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-orange, 0 5px 15px rgba(255, 107, 53, 0.3));
+}
+
+.btn-login:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+}
+
+.login-form .error-message {
+    color: #ff6384; /* A reddish color for errors */
+    background-color: rgba(255, 99, 132, 0.1);
+    border: 1px solid rgba(255, 99, 132, 0.5);
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* src/pages/admin/LoginPage.css */
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* ഐക്കണിന് സ്ഥലം നൽകാൻ */
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 38px; /* ലേബലിന് താഴെ ഇൻപുട്ടിന്റെ നടുവിൽ വരാൻ ക്രമീകരിക്കുക */
+  right: 10px;
+  cursor: pointer;
+  user-select: none; /* ഐക്കൺ സെലക്ട് ആവാതിരിക്കാൻ */
+  font-size: 1.2rem; /* ഐക്കണിന്റെ വലുപ്പം */
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 1rem;
+}
+
+.forgot-password-link {
+  text-align: right;
+  margin-top: 10px;
+}
+
+.forgot-password-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.forgot-password-link a:hover {
+  text-decoration: underline;
+}
+
+/* ============================================= */
+/* --- Gallery Management Page Specific Styles --- */
+/* ============================================= */
+
+/* പ്രധാന പേജിന്റെ ലേഔട്ട് */
+.admin-page {
+    padding: 2.5rem;
+}
+
+/* ഫോമും ലിസ്റ്റും ഉൾക്കൊള്ളുന്ന കാർഡുകൾ */
+.admin-card {
+    background-color: var(--bg-dark);
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.admin-card h2 {
+    font-size: 1.5rem;
+    color: var(--primary-white);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+/* ✅ അഡ്മിൻ ഫോമിന് പുതിയ ഗ്രിഡ് ലേഔട്ട് */
+.admin-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* രണ്ട് കോളം ലേഔട്ട് */
+    gap: 1.5rem 2rem; /* വരികൾക്കും കോളങ്ങൾക്കും ഇടയിൽ ഗ്യാപ്പ് */
+}
+
+/* മുഴുവൻ വീതിയും വേണ്ട ഫീൽഡുകൾക്കായി */
+.form-group-full {
+    grid-column: 1 / -1; /* രണ്ട് കോളത്തിലും നിറഞ്ഞുനിൽക്കാൻ */
+}
+
+.admin-form .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #a0a0a0; /* കുറച്ചുകൂടി വ്യക്തമായ നിറം */
+}
+
+/* ✅ ഇൻപുട്ട്, ടെക്സ്റ്റ്ഏരിയ, സെലക്ട് എന്നിവയ്ക്ക് പുതിയ സ്റ്റൈൽ */
+.admin-form input[type="text"],
+.admin-form textarea,
+.admin-form select,
+.admin-form input[type="file"] {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background-color: var(--primary-black);
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: var(--primary-white);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-form input:focus,
+.admin-form textarea:focus,
+.admin-form select:focus {
+    outline: none;
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.25);
+}
+
+.admin-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* ബട്ടണുകൾ വലതുവശത്തേക്ക് അലൈൻ ചെയ്യാൻ */
+.admin-form .form-actions {
+    grid-column: 1 / -1;
+    text-align: right;
+    margin-top: 1rem;
+}
+
+/* ഗാലറി ഐറ്റംസ് കാണിക്കുന്ന ഗ്രിഡ് (മാറ്റമില്ല) */
+.gallery-management-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+/* ഗ്രിഡിലെ ഓരോ ഐറ്റവും */
+.gallery-management-item {
+    background-color: var(--primary-black);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-management-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-management-item img,
+.gallery-management-item video {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+/* ചിത്രത്തിന് താഴെയുള്ള വിവരങ്ങൾ */
+.gallery-management-item .item-details {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* കാർഡിന്റെ ബാക്കി ഭാഗം മുഴുവൻ എടുക്കാൻ */
+}
+
+.item-details strong {
+    font-size: 1.1rem;
+    color: var(--primary-white);
+    margin-bottom: 0.5rem;
+}
+
+.item-details p {
+    font-size: 0.8rem;
+    color: var(--primary-orange);
+    background-color: rgba(255, 107, 53, 0.1);
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    align-self: flex-start; /* കണ്ടന്റിന് അനുസരിച്ച് വീതി ക്രമീകരിക്കാൻ */
+    text-transform: capitalize;
+    margin: 0;
+}
+
+/* എഡിറ്റ്, ഡിലീറ്റ് ബട്ടണുകൾ */
+.item-actions {
+    margin-top: auto; /* ബട്ടണുകളെ കാർഡിന്റെ താഴേക്ക് കൊണ്ടുവരുന്നു */
+    padding-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-edit,
+.btn-danger {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex-grow: 1; /* ബട്ടണുകൾക്ക് തുല്യ വീതി നൽകുന്നു */
+}
+
+.btn-edit {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--primary-white);
+    border: 1px solid var(--border-color);
+}
+
+.btn-edit:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--primary-orange);
+}
+
+.btn-danger {
+    background-color: rgba(255, 99, 132, 0.15);
+    color: #ff6384;
+    border: 1px solid #ff6384;
+}
+
+.btn-danger:hover {
+    background-color: #ff6384;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary {
+  background: var(--gradient-orange); /* ഓറഞ്ച് ഗ്രേഡിയന്റ് പശ്ചാത്തലം */
+  color: var(--primary-white);
+  padding: 0.8rem 1.8rem;
+  border: none; /* ബോർഡർ ഒഴിവാക്കുന്നു */
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* സോഫ്റ്റ് ഷാഡോ */
+  letter-spacing: 0.5px;
+}
+
+/* മൗസ് മുകളിൽ വരുമ്പോൾ */
+.btn-primary:hover {
+  transform: translateY(-3px); /* ചെറുതായി മുകളിലേക്ക് ഉയരുന്നു */
+  box-shadow: var(--shadow-orange); /* ഓറഞ്ച് നിറത്തിലുള്ള ഷാഡോ */
+}
+
+/* ബട്ടൺ ഡിസേബിൾ ആയിരിക്കുമ്പോൾ */
+.btn-primary:disabled {
+  background: #555;
+  color: #999;
+  cursor: not-allowed;
+  transform: translateY(0);
+  box-shadow: none;
+}
+/* പിശകുകൾ കാണിക്കാനുള്ള മെസ്സേജ് */
+.error-message {
+    color: #ff6b6b;
+    background-color: rgba(8, 8, 8, 0.1);
+    border: 1px solid #ff6b6b;
+    padding: 0.75rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+/* AdminPages.css അല്ലെങ്കിൽ Admin.css */
+
+.admin-page-container {
+    padding: 2rem;
+}
+
+.page-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #E0E0E0; /* അഡ്മിൻ പേജിലെ പ്രധാന തലക്കെട്ടിന് ഇളം നിറം */
+}
+
+.table-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #555; /* ഹെഡറിലെ എഴുത്തിന് കടും ചാരനിറം */
+}
+
+/* ✅ ഇവിടെയാണ് പ്രധാന മാറ്റം വരുത്തിയത് */
+td {
+    color: #333; /* ടേബിളിലെ ഡാറ്റയ്ക്ക് കറുപ്പ് നിറം നൽകുന്നു */
+}
+
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* വായിക്കാത്തവയ്ക്ക് സ്റ്റൈൽ */
+tbody tr.unread {
+    background-color: #fffbe6; /* ഇളം മഞ്ഞ */
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* വായിക്കാത്തവയിലെ എഴുത്തിന് കറുപ്പ് നിറം ഉറപ്പാക്കുന്നു */
+tbody tr.unread td {
+    color: #212529;
+}
+
+.query-cell {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* സൈഡ്‌ബാർ CSS ഫയലിൽ ചേർക്കുക */
+.notification-badge {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background-color: #ff4d4f; /* ചുവപ്പ് നിറം */
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.sidebar.collapsed .notification-badge {
+    top: 5px;
+    right: 5px;
+    width: 10px;
+    height: 10px;
+    font-size: 0; /* നമ്പർ കാണിക്കില്ല, ഡോട്ട് മാത്രം */
+}
+
+/* Admin.css ഫയലിന്റെ അവസാനം ചേർക്കുക */
+
+.status-select {
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.status-select:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* വായിക്കാത്ത വരികളിലെ ഡ്രോപ്പ്ഡൗൺ */
+tr.unread .status-select {
+    border-color: #f0ad4e;
 }

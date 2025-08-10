@@ -134,10 +134,7 @@ const HomePage = () => {
                         <p className="hero-description">
                             SkillvateTech is the Industry 5.0 finishing school in Kochi that transforms your academic knowledge into career-ready expertise.
                         </p>
-                        <div className="hero-actions">
-                            <Link to="/programs" className="btn btn-primary"><span>Explore Programs</span> <i className="fas fa-arrow-right"></i></Link>
-                            <Link to="/admission" className="btn btn-secondary"><span>Apply Now</span></Link>
-                        </div>
+                        
                     </div>
                 </section>
                 
@@ -271,17 +268,19 @@ const HomePage = () => {
                 </section>
                 
                 <section id="cta" className="section cta">
-                    <div className="container cta-content">
-                        <h2 className="orange-text">Ready to Engineer Your Future?</h2>
-                        <p>Talk to our career advisors and find the perfect program to launch your career.</p>
-                        <div className="cta-actions">
-                            <Link to="/contact" className="btn btn-primary"><i className="fas fa-phone"></i> Book a Consultation</Link>
-                            <Link to="/admission" className="btn btn-secondary"><i className="fas fa-info-circle"></i> Request Info</Link>
-                            <Link to="/resources" className="btn btn-outline"><i className="fas fa-video"></i> Join a Free Webinar</Link>
-                        </div>
+                <div className="container cta-content">
+                    <h2 className="orange-text">Ready to Engineer Your Future?</h2>
+                    <p>Take the first step towards a successful career. Apply for our next batch today.</p>
+                    <div className="cta-actions">
+                        {/* --- മാറ്റം ഇവിടെയാണ് --- */}
+                        {/* ലിങ്ക് /admission#apply-now എന്നാക്കി മാറ്റി */}
+                        <Link to="/admission#apply-now" className="btn btn-primary">
+                           <i className="fas fa-paper-plane"></i> Apply Now
+                        </Link>
                     </div>
-                </section>
-            </main>
+                </div>
+            </section>
+        </main>
         </>
     );
 };

@@ -3,11 +3,11 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// ലേഔട്ടുകൾ
-import UserLayout from './components/layout/UserLayout.jsx'; // പേര് മാറ്റിയത് ശ്രദ്ധിക്കുക
+// Layouts
+import UserLayout from './components/layout/UserLayout.jsx';
 import AdminLayout from './components/layout/AdminLayout.jsx';
 
-// യൂസർ പേജുകൾ
+// User Pages
 import HomePage from './pages/user/HomePage.jsx';
 import AboutPage from './pages/user/AboutPage.jsx';
 import AdmissionPage from './pages/user/AdmissionPage.jsx';
@@ -17,15 +17,26 @@ import GalleryPage from './pages/user/GalleryPage.jsx';
 import ProgramsPage from './pages/user/ProgramsPage.jsx';
 import ResourcesPage from './pages/user/ResourcesPage.jsx';
 
-// അഡ്മിൻ, ലോഗിൻ പേജുകൾ
+// Admin & Auth Pages
 import LoginPage from './pages/admin/LoginPage.jsx';
-import DashboardPage from './pages/admin/DashboardPage.jsx'; // ശരിയായ പാത്ത്
+import DashboardPage from './pages/admin/DashboardPage.jsx';
+import ForgotPasswordPage from './pages/admin/ForgotPasswordPage.jsx';
+import OtpVerificationPage from './pages/admin/OtpVerificationPage.jsx';
+import ResetPasswordPage from './pages/admin/ResetPasswordPage.jsx';
+import ApplicationsPage from './pages/admin/ApplicationsPage.jsx'; 
+import InquiriesPage from './pages/admin/InquiriesPage.jsx';
+
+// ✅ പുതിയതായി ഗാലറി മാനേജ്മെൻ്റ് പേജ് ഇമ്പോർട്ട് ചെയ്യുന്നു
+import GalleryManagementPage from './pages/admin/GalleryManagementPage.jsx';
+
+// Auth Component
+import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* യൂസർ പോർട്ടൽ */}
+        {/* --- User Portal Routes --- */}
         <Route path="/" element={<UserLayout />}>
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
@@ -37,11 +48,30 @@ function App() {
           <Route path="resources" element={<ResourcesPage />} />
         </Route>
 
-        {/* അഡ്മിൻ പോർട്ടൽ */}
+        {/* --- Admin & Auth Routes --- */}
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/verify-otp" element={<OtpVerificationPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+
+        {/* Protected Admin Routes */}
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<DashboardPage />} />
+          <Route path="applications" element={<ApplicationsPage />} />
+          <Route path="inquiries" element={<InquiriesPage />} />
+          
+          {/* ----- ✅ ഗാലറി പേജിനുള്ള റൂട്ട് ഇവിടെ ചേർത്തു ----- */}
+          <Route path="gallery" element={<GalleryManagementPage />} />
+          
         </Route>
+        
       </Routes>
     </BrowserRouter>
   );

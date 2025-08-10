@@ -188,7 +188,6 @@ const AdvisoryBoardPage = () => {
                     <p>Our programs are shaped by these industry leaders. Find the perfect one to launch your career.</p>
                     <div className="cta-actions">
                         <Link to="/programs" className="btn btn-primary"><FontAwesomeIcon icon={faGraduationCap} /> Explore Programs</Link>
-                        <Link to="/contact" className="btn btn-secondary"><FontAwesomeIcon icon={faPhone} /> Contact Advisors</Link>
                     </div>
                 </div>
             </section>

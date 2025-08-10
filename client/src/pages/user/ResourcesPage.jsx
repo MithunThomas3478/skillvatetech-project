@@ -97,10 +97,6 @@ const ResourcesPage = () => {
                     <p className="hero-description">
                         Explore our collection of free resources—from deep-dive articles to expert webinars—designed to keep you ahead of the engineering curve.
                     </p>
-                    <div className="hero-actions">
-                        <a href="#blog" className="btn btn-primary"><span>Read Articles</span> <i className="fas fa-newspaper"></i></a>
-                        <a href="#brochure" className="btn btn-secondary"><span>Download Brochure</span></a>
-                    </div>
                 </div>
             </section>
 

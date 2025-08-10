@@ -121,10 +121,6 @@ const AboutPage = () => {
                     <p className="hero-description">
                         We are a collective of educators and industry veterans from Kochi, dedicated to shaping the next generation of engineers for the challenges of Industry 5.0.
                     </p>
-                    <div className="hero-actions">
-                        <a href="#team" className="btn btn-primary"><span>Meet the Team</span> <FontAwesomeIcon icon={faUsers} /></a>
-                        <a href="#infrastructure" className="btn btn-secondary"><span>Explore Our Labs</span></a>
-                    </div>
                 </div>
             </section>
 
@@ -251,13 +247,13 @@ const AboutPage = () => {
                 </div>
             </section>
 
-            <section id="cta" className="section cta">
+           <section id="cta" className="section cta">
                 <div className="container cta-content">
                     <h2 className="section-title">Ready to Build Your Future?</h2>
                     <p className="section-subtitle" style={{ color: 'var(--text-gray)', marginTop: '1rem', marginBottom: '2.5rem' }}>Your journey from classroom to a career in a top company starts here. Talk to our advisors today.</p>
                     <div className="cta-actions">
-                        <Link to="/admission" className="btn btn-primary"><FontAwesomeIcon icon={faUserCheck} /> Apply Now</Link>
-                        <Link to="/contact" className="btn btn-secondary"><FontAwesomeIcon icon={faInfoCircle} /> Request Info</Link>
+                        {/* --- ✅ മാറ്റം ഇവിടെയാണ്: ലിങ്കിൽ #apply-now ചേർത്തു --- */}
+                        <Link to="/admission#apply-now" className="btn btn-primary"><FontAwesomeIcon icon={faUserCheck} /> Apply Now</Link>
                     </div>
                 </div>
             </section>

@@ -182,10 +182,6 @@ const ProgramsPage = () => {
                     <p className="hero-description">
                         Detailed, industry-vetted curriculums for Mechanical, Electrical, Computer Science, and more. Find the perfect path to launch your engineering career in Kochi.
                     </p>
-                    <div className="hero-actions">
-                        <Link to="/contact" className="btn btn-primary"><span>Talk to an Advisor</span> <FontAwesomeIcon icon={faPhoneAlt} /></Link>
-                        <Link to="/admission" className="btn btn-secondary"><span>Apply Now</span></Link>
-                    </div>
                 </div>
             </section>
 
@@ -240,13 +236,16 @@ const ProgramsPage = () => {
                 </Swiper>
             </section>
             
-            <section id="cta" className="section cta">
+           <section id="cta" className="section cta">
                  <div className="container cta-content">
                     <h2 className="orange-text">Ready to Engineer Your Future?</h2>
-                    <p>Talk to our career advisors and find the perfect program to launch your career.</p>
+                    <p>Find the perfect program and take the first step to launch your career.</p>
                     <div className="cta-actions">
-                        <Link to="/contact" className="btn btn-primary"><FontAwesomeIcon icon={faPhoneAlt}/> Book a Consultation</Link>
-                        <Link to="/admission" className="btn btn-secondary">Request Info</Link>
+                        {/* --- ✅ മാറ്റം ഇവിടെയാണ് --- */}
+                        {/* ലിങ്ക് /admission#apply-now എന്നാക്കി മാറ്റി */}
+                        <Link to="/admission#apply-now" className="btn btn-primary">
+                            <i className="fas fa-user-check" style={{ marginRight: '8px' }}></i> Apply Now
+                        </Link>
                     </div>
                 </div>
             </section>

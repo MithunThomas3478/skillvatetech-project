@@ -1,59 +1,126 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import heroVideo from '../../assets/Futuristic_Training_Space_Video_Generation.mp4';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearchPlus } from '@fortawesome/free-solid-svg-icons';
+import { faSearchPlus, faPlay, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-// ഗാലറിയിലെ ചിത്രങ്ങളുടെ ഡാറ്റാ
-const galleryData = [
-    { id: 1, src: "https://images.unsplash.com/photo-1581092921462-205167e483a3?w=800", alt: "Robotics Arm in Action", caption: "Robotics Lab", category: "labs" },
-    { id: 2, src: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800", alt: "Students collaborating", caption: "Collaborative Spaces", category: "campus" },
-    { id: 3, src: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800", alt: "Tech conference", caption: "Industry Tech Talk", category: "events" },
-    { id: 4, src: "https://images.unsplash.com/photo-1627993435234-356a31535a25?w=800", alt: "Circuit board", caption: "Electronics Workbench", category: "labs" },
-    { id: 5, src: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800", alt: "Hackathon winners", caption: "Hackathon Winners", category: "events" },
-    { id: 6, src: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800", alt: "Students studying", caption: "Focused Study Sessions", category: "campus" }
-];
+const API_BASE_URL = 'http://localhost:5000';
+
+// കാറ്റഗറി പേരുകളും ഓർഡറും ഇവിടെ നിർവചിക്കുന്നു
+const CATEGORY_ORDER = ['labs', 'campus', 'events'];
+const categoryTitles = {
+    labs: "Labs & Tech",
+    campus: "Campus Life",
+    events: "Events"
+};
 
 const GalleryPage = () => {
-    const hero3dRef = useRef(null);
-    const [filter, setFilter] = useState('all');
-    const [lightboxImage, setLightboxImage] = useState(null);
+    const [groupedData, setGroupedData] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [lightboxMedia, setLightboxMedia] = useState(null);
+    const [expandedCategories, setExpandedCategories] = useState({});
+    
+    // ✅ NEW: State for active category filter
+    const [activeFilter, setActiveFilter] = useState('all');
 
     useEffect(() => {
-        // GSAP and Three.js initialization
-        if (!window.gsap || !window.THREE) {
-            console.warn("Waiting for GSAP and Three.js to load...");
-            return;
-        }
+        const fetchGalleryData = async () => {
+            try {
+                setLoading(true);
+                const res = await axios.get(`${API_BASE_URL}/api/gallery`);
+                
+                const dataByGroup = res.data.reduce((acc, item) => {
+                    const category = item.category || 'general';
+                    if (!acc[category]) {
+                        acc[category] = [];
+                    }
+                    acc[category].push({
+                        id: item._id,
+                        src: `${API_BASE_URL}${item.mediaUrl}`,
+                        alt: item.title,
+                        caption: item.title,
+                        category: item.category,
+                        type: item.mediaType
+                    });
+                    return acc;
+                }, {});
 
-        const gsap = window.gsap;
-        const ScrollTrigger = window.ScrollTrigger;
-        gsap.registerPlugin(ScrollTrigger);
-
-        gsap.from(".hero-content > *", { duration: 1, y: 50, opacity: 0, stagger: 0.2, ease: "power3.out", delay: 0.5 });
-        
-        // This animation will now re-trigger when the filter changes, thanks to the key on gallery-grid
-        gsap.from(".gallery-item", {
-            scrollTrigger: {
-                trigger: ".gallery-grid",
-                start: "top 85%",
-                toggleActions: "play none none none"
-            },
-            duration: 0.8,
-            y: 50,
-            scale: 0.95,
-            opacity: 0,
-            stagger: 0.1,
-            ease: "power2.out"
-        });
-
-        // Add 3D Scene Logic here if needed, similar to other pages
-        // ...
-
+                setGroupedData(dataByGroup);
+                setLoading(false);
+            } catch (err) {
+                console.error("Failed to fetch gallery data", err);
+                setLoading(false);
+            }
+        };
+        fetchGalleryData();
     }, []);
 
-    const filteredItems = filter === 'all'
-        ? galleryData
-        : galleryData.filter(item => item.category === filter);
+    // ✅ NEW: Keyboard navigation for lightbox
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (!lightboxMedia) return;
+            if (e.key === 'Escape') {
+                setLightboxMedia(null);
+            } else if (e.key === 'ArrowRight') {
+                handleNextMedia();
+            } else if (e.key === 'ArrowLeft') {
+                handlePrevMedia();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [lightboxMedia]);
+
+
+    const handleToggleView = (category) => {
+        setExpandedCategories(prev => ({ ...prev, [category]: !prev[category] }));
+    };
+
+    // ✅ NEW: Functions to handle lightbox navigation
+    const openLightbox = (item) => {
+        const categoryItems = groupedData[item.category] || [];
+        const currentIndex = categoryItems.findIndex(i => i.id === item.id);
+        setLightboxMedia({ ...item, categoryItems, currentIndex });
+    };
+
+    const handleNextMedia = () => {
+        if (!lightboxMedia) return;
+        const { categoryItems, currentIndex } = lightboxMedia;
+        const nextIndex = (currentIndex + 1) % categoryItems.length;
+        setLightboxMedia({ ...categoryItems[nextIndex], categoryItems, currentIndex: nextIndex });
+    };
+
+    const handlePrevMedia = () => {
+        if (!lightboxMedia) return;
+        const { categoryItems, currentIndex } = lightboxMedia;
+        const prevIndex = (currentIndex - 1 + categoryItems.length) % categoryItems.length;
+        setLightboxMedia({ ...categoryItems[prevIndex], categoryItems, currentIndex: prevIndex });
+    };
+
+    // ✅ NEW: Handle mouse enter/leave for video playback
+    const handleMouseEnter = (e) => {
+        const video = e.currentTarget.querySelector('video');
+        if (video) {
+            video.play().catch(err => console.log("Autoplay blocked"));
+        }
+    };
+    
+    const handleMouseLeave = (e) => {
+        const video = e.currentTarget.querySelector('video');
+        if (video) {
+            video.pause();
+            video.currentTime = 0; // Reset video to start
+        }
+    };
+
+    const isGalleryEmpty = !loading && Object.keys(groupedData).length === 0;
+
+    const categoriesToDisplay = CATEGORY_ORDER.filter(category => 
+        (activeFilter === 'all' || activeFilter === category) && groupedData[category]
+    );
 
     return (
         <>
@@ -64,7 +131,6 @@ const GalleryPage = () => {
                     </video>
                     <div className="video-overlay"></div>
                 </div>
-                <div className="hero-3d" ref={hero3dRef}></div>
                 <div className="container hero-content">
                     <h1 className="hero-title">
                         <span className="title-line">A Glimpse Into</span>
@@ -78,38 +144,91 @@ const GalleryPage = () => {
 
             <section id="gallery" className="section">
                 <div className="container">
-                    <div className="section-header">
-                        <h2 className="section-title">Campus & Innovations</h2>
-                        <p className="section-subtitle">Filter through moments that define the SkillvateTech experience.</p>
-                    </div>
+                    {loading && <p className="loading-text">Loading Gallery...</p>}
+                    
+                    {isGalleryEmpty && <p className="empty-gallery-message">The gallery is currently empty. Please check back later.</p>}
 
-                    <div className="gallery-filters">
-                        <button type="button" className={`filter-btn ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>All</button>
-                        <button type="button" className={`filter-btn ${filter === 'labs' ? 'active' : ''}`} onClick={() => setFilter('labs')}>Labs & Tech</button>
-                        <button type="button" className={`filter-btn ${filter === 'campus' ? 'active' : ''}`} onClick={() => setFilter('campus')}>Campus Life</button>
-                        <button type="button" className={`filter-btn ${filter === 'events' ? 'active' : ''}`} onClick={() => setFilter('events')}>Events</button>
-                    </div>
-
-                    <div className="gallery-grid" key={filter}>
-                        {filteredItems.map(item => (
-                            <div className="gallery-item" key={item.id} onClick={() => setLightboxImage(item.src)}>
-                                <img src={item.src} alt={item.alt} />
-                                <div className="gallery-overlay">
-                                    <FontAwesomeIcon icon={faSearchPlus} className="icon" />
-                                    <p className="caption">{item.caption}</p>
-                                </div>
+                    {!loading && !isGalleryEmpty && (
+                        <>
+                            {/* ✅ NEW: Filter Buttons */}
+                            <div className="gallery-filters">
+                                <button className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`} onClick={() => setActiveFilter('all')}>
+                                    All Categories
+                                </button>
+                                {CATEGORY_ORDER.map(cat => (
+                                    groupedData[cat] && <button key={cat} className={`filter-btn ${activeFilter === cat ? 'active' : ''}`} onClick={() => setActiveFilter(cat)}>
+                                        {categoryTitles[cat]}
+                                    </button>
+                                ))}
                             </div>
-                        ))}
-                    </div>
+
+                            {categoriesToDisplay.map(category => {
+                                const items = groupedData[category];
+                                if (!items || items.length === 0) return null;
+
+                                const isExpanded = expandedCategories[category];
+                                const visibleItems = isExpanded ? items : items.slice(0, 4); // Show 4 items initially
+
+                                return (
+                                    <div key={category} className="gallery-category-section">
+                                        <h2 className="section-title">{categoryTitles[category] || category}</h2>
+                                        <div className="gallery-grid">
+                                            {visibleItems.map(item => (
+                                                <div 
+                                                    className="gallery-item" 
+                                                    key={item.id} 
+                                                    onClick={() => openLightbox(item)}
+                                                    onMouseEnter={handleMouseEnter}
+                                                    onMouseLeave={handleMouseLeave}
+                                                >
+                                                    {item.type === 'image' ? (
+                                                        <img src={item.src} alt={item.alt} loading="lazy" />
+                                                    ) : (
+                                                        <video src={item.src} muted loop playsInline preload="metadata" />
+                                                    )}
+                                                    <div className="gallery-overlay">
+                                                        <FontAwesomeIcon icon={item.type === 'video' ? faPlay : faSearchPlus} className="icon" />
+                                                        <p className="caption">{item.caption}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        
+                                        {items.length > 4 && (
+                                            <div className="view-all-container">
+                                                <button className="btn-secondary" onClick={() => handleToggleView(category)}>
+                                                    {isExpanded ? 'View Less' : 'View All'}
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </>
+                    )}
                 </div>
             </section>
 
-            {lightboxImage && (
-                <div className="lightbox active" onClick={() => setLightboxImage(null)}>
+            {/* ✅ NEW: Upgraded Lightbox with Navigation */}
+            {lightboxMedia && (
+                <div className="lightbox active" onClick={() => setLightboxMedia(null)}>
+                    <button className="lightbox-nav prev" onClick={(e) => { e.stopPropagation(); handlePrevMedia(); }}>
+                        <FontAwesomeIcon icon={faChevronLeft} />
+                    </button>
+
                     <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-                        <span className="lightbox-close" onClick={() => setLightboxImage(null)}>×</span>
-                        <img src={lightboxImage} alt="Enlarged gallery view" />
+                        <span className="lightbox-close" onClick={() => setLightboxMedia(null)}>×</span>
+                        {lightboxMedia.type === 'image' ? (
+                            <img src={lightboxMedia.src} alt="Enlarged gallery view" />
+                        ) : (
+                           <video src={lightboxMedia.src} controls autoPlay loop />
+                        )}
+                        <div className="lightbox-caption">{lightboxMedia.caption}</div>
                     </div>
+
+                    <button className="lightbox-nav next" onClick={(e) => { e.stopPropagation(); handleNextMedia(); }}>
+                        <FontAwesomeIcon icon={faChevronRight} />
+                    </button>
                 </div>
             )}
         </>

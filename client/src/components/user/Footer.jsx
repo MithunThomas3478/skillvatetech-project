@@ -37,13 +37,15 @@ const Footer = () => {
           <div className="footer-links">
             <h4>Quick Links</h4>
             <ul>
-                <li><Link to="/" className="nav-link">Home</Link></li>
-                <li><Link to="/about" className="nav-link">About Us</Link></li>
-                <li><Link to="/advisory-board" className="nav-link">Advisory Board</Link></li>
-                <li><Link to="/programs" className="nav-link">Programs</Link></li>
-                <li><Link to="/resources" className="nav-link">Resources</Link></li>
-                <li><Link to="/gallery" className="nav-link">Gallery</Link></li>
-                <li><Link to="/contact" className="nav-link">Contact Us</Link></li>
+              {/* --- ✅ മാറ്റം വരുത്തിയ ലിങ്കുകൾ --- */}
+              <li><Link to="/" className="footer-link">Home</Link></li>
+              <li><Link to="/about" className="footer-link">About Us</Link></li>
+              <li><Link to="/advisory-board" className="footer-link">Advisory Board</Link></li>
+              <li><Link to="/admission" className="footer-link">Admissions</Link></li>
+              <li><Link to="/programs" className="footer-link">Programs</Link></li>
+              <li><Link to="/resources" className="footer-link">Resources</Link></li>
+              <li><Link to="/gallery" className="footer-link">Gallery</Link></li>
+              <li><Link to="/contact" className="footer-link">Contact Us</Link></li>
             </ul>
           </div>
           <div className="footer-links">

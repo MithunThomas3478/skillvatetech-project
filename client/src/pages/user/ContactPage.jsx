@@ -141,10 +141,6 @@ const ContactPage = () => {
                     <p className="hero-description">
                         Whether you're a prospective student, a parent, or an industry partner, our team in Kochi is ready to assist you. Let's connect and build the future together.
                     </p>
-                    <div className="hero-actions">
-                        <a href="#contact-form" className="btn btn-primary"><span>Fill Inquiry Form</span> <FontAwesomeIcon icon={faEdit} /></a>
-                        <a href="tel:+919876543210" className="btn btn-secondary"><span>Call Us Now</span></a>
-                    </div>
                 </div>
             </section>
             

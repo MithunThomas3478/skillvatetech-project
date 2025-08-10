@@ -1,4 +1,7 @@
+// src/pages/AdmissionPage.jsx
+
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import heroVideo from '../../assets/Futuristic_Training_Space_Video_Generation.mp4';
 
@@ -12,6 +15,9 @@ const AdmissionPage = () => {
         message: ''
     });
     const [formResponse, setFormResponse] = useState({ message: '', error: false });
+
+    const location = useLocation();
+    const applicationFormRef = useRef(null);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,12 +37,17 @@ const AdmissionPage = () => {
 
     useEffect(() => {
         if (!window.gsap || !window.THREE) return;
-        
         const gsap = window.gsap;
         gsap.from(".hero-content > *", { duration: 1, y: 50, opacity: 0, stagger: 0.2, ease: "power3.out", delay: 0.5 });
-
-        // Add other animations and 3D scene logic here if needed, like in other pages
     }, []);
+
+    useEffect(() => {
+        if (location.hash === '#apply-now') {
+            setTimeout(() => {
+                applicationFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+    }, [location.hash]);
 
     return (
         <>
@@ -56,13 +67,10 @@ const AdmissionPage = () => {
                     <p className="hero-description">
                         Our straightforward admission process is designed to get you on track to becoming a skilled Industry 5.0 engineer. Apply today to join our next batch in Kochi.
                     </p>
-                    <div className="hero-actions">
-                        <a href="#apply-now" className="btn btn-primary"><span>Apply Now</span> <i className="fas fa-paper-plane"></i></a>
-                    </div>
                 </div>
             </section>
 
-            <section id="apply-now" className="section" style={{ background: 'var(--bg-darker)' }}>
+            <section id="apply-now" ref={applicationFormRef} className="section" style={{ background: 'var(--bg-darker)' }}>
                 <div className="container">
                     <div className="section-header">
                         <h2 className="section-title orange-text">Application Form</h2>
@@ -72,7 +80,10 @@ const AdmissionPage = () => {
                         <div className="form-grid">
                             <div className="form-group"><label htmlFor="name">Full Name</label><input type="text" id="name" name="name" value={formData.name} onChange={handleChange} className="form-control" required /></div>
                             <div className="form-group"><label htmlFor="email">Email Address</label><input type="email" id="email" name="email" value={formData.email} onChange={handleChange} className="form-control" required /></div>
+                            
+                            {/* ✅ ഇവിടെയാണ് മാറ്റം വരുത്തിയത് */}
                             <div className="form-group"><label htmlFor="phone">Phone Number</label><input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} className="form-control" required /></div>
+                            
                             <div className="form-group">
                                 <label htmlFor="stream">Engineering Stream</label>
                                 <select id="stream" name="stream" value={formData.stream} onChange={handleChange} className="form-control" required>
