@@ -974,3 +974,21 @@ tbody tr.unread td {
 tr.unread .status-select {
     border-color: #f0ad4e;
 }
+
+/* Password toggle icon styles */
+.form-group {
+    position: relative; /* ഇത് പ്രധാനമാണ് */
+}
+
+.password-toggle-icon {
+    position: absolute;
+    top: 42px; /* ലേബൽ ഉള്ളതുകൊണ്ട് ടോപ്പിൽ നിന്ന് കുറച്ച് താഴോട്ട് വെക്കുന്നു */
+    right: 15px;
+    cursor: pointer;
+    color: #999999; /* ഐക്കണിന്റെ നിറം */
+    transition: color 0.3s ease;
+}
+
+.password-toggle-icon:hover {
+    color: #ffffff; /* മൗസ് മുകളിൽ വരുമ്പോൾ നിറം മാറുന്നു */
+}

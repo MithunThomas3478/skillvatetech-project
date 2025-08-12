@@ -67,8 +67,12 @@ exports.login = async (req, res) => {
 // @route   POST /api/auth/forgot-password
 exports.forgotPassword = async (req, res) => {
     const { email } = req.body;
+
+    console.log("Searching for email:", email);
     try {
         const user = await User.findOne({ email });
+
+         console.log("User found:", user);
         if (!user) {
             return res.status(404).json({ message: 'Email not found' });
         }

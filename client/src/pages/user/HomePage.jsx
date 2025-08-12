@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import heroVideo from '../../assets/Futuristic_Training_Space_Video_Generation.mp4';
 
@@ -13,7 +13,7 @@ import 'swiper/css/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCogs, faBolt, faMicrochip, faLaptopCode, faGaugeHigh, faBuilding } from '@fortawesome/free-solid-svg-icons';
 
-// 3D Scene helper function
+// 3D Scene helper function (No changes here)
 const init3DScene = (container) => {
     if (!container || container.children.length > 0 || !window.THREE) return;
     const THREE = window.THREE;
@@ -74,10 +74,39 @@ const init3DScene = (container) => {
     };
 };
 
+// --- മാറ്റം ഇവിടെയാണ് തുടങ്ങുന്നത് ---
+
+// 1. ഹീറോ സെക്ഷനിലെ കണ്ടന്റുകൾ ഒരു array ആക്കി മാറ്റി
+const heroContents = [
+    {
+        title1: "From Classroom to Career",
+        title2: " Engineer Your Future with Us",
+        description: "SkillvateTech is the Industry 5.0 finishing school in Kochi that transforms your academic knowledge into career-ready expertise."
+    },
+    {
+        title1: "We Don't Just Teach. We Transform.",
+        title2: "We Build the Bridge from Classroom to Career.",
+        description: "We go beyond teaching — shaping skills, confidence, and careers by bridging the gap from classroom to workplace."
+    },
+    {
+        title1: "The Final Semester ",
+        title2: "You Never Had.",
+        description: "Gain the practical skills and industry exposure that academic curriculum misses."
+    },
+    {
+        title1: "From Campus Theory to ",
+        title2: "Corporate Reality.",
+        description: "We prepare you for the real-world challenges of the engineering industry."
+    }
+];
+
 
 const HomePage = () => {
     const hero3dRef = useRef(null);
+    // 2. നിലവിൽ ഏത് കണ്ടന്റാണ് കാണിക്കേണ്ടതെന്ന് അറിയാൻ ഒരു state variable
+    const [currentIndex, setCurrentIndex] = useState(0);
 
+    // പഴയ useEffect-ൽ നിന്ന് ഹീറോ ആനിമേഷൻ വേർതിരിച്ചു
     useEffect(() => {
         if (!window.gsap || !window.THREE) {
             console.warn("Waiting for libraries (GSAP, Three.js) to load...");
@@ -87,9 +116,7 @@ const HomePage = () => {
         const gsap = window.gsap;
         const ScrollTrigger = window.ScrollTrigger;
         gsap.registerPlugin(ScrollTrigger);
-        
-        gsap.from(".hero-content > *", { duration: 1, y: 50, opacity: 0, stagger: 0.2, ease: "power3.out", delay: 0.5 });
-        
+
         const cleanup3D = init3DScene(hero3dRef.current);
 
         document.querySelectorAll(".stat-number").forEach(counter => {
@@ -108,12 +135,45 @@ const HomePage = () => {
                 }
             });
         });
-        
+
         return () => {
             if (cleanup3D) cleanup3D();
             ScrollTrigger.getAll().forEach(t => t.kill());
         };
     }, []);
+
+    // 3. കണ്ടന്റ് തനിയെ മാറ്റാനുള്ള useEffect (5 സെക്കൻഡ് ഇടവേളയിൽ)
+    useEffect(() => {
+        const sliderInterval = setInterval(() => {
+            setCurrentIndex(prevIndex => (prevIndex + 1) % heroContents.length);
+        }, 5000); // 5000ms = 5 seconds
+
+        return () => {
+            clearInterval(sliderInterval); // component unmount ആവുമ്പോൾ interval നിർത്തുന്നു
+        };
+    }, []);
+
+    // 4. ഓരോ തവണ കണ്ടന്റ് മാറുമ്പോഴും ആനിമേഷൻ പ്രവർത്തിപ്പിക്കാനുള്ള useEffect
+    useEffect(() => {
+        if (!window.gsap) return;
+
+        const gsap = window.gsap;
+        // പുതിയ കണ്ടന്റ് വരുമ്പോൾ അതിന് ആനിമേഷൻ നൽകുന്നു
+        const animation = gsap.fromTo(".hero-content > *",
+            { y: 30, opacity: 0 },
+            {
+                duration: 1,
+                y: 0,
+                opacity: 1,
+                stagger: 0.2,
+                ease: "power3.out"
+            }
+        );
+
+        return () => {
+            animation.kill(); // അടുത്ത ആനിമേഷൻ തുടങ്ങുന്നതിന് മുൻപ് പഴയത് നിർത്തുന്നു
+        };
+    }, [currentIndex]); // currentIndex മാറുമ്പോൾ ഈ എഫക്റ്റ് വീണ്ടും പ്രവർത്തിക്കും
 
     return (
         <>
@@ -126,18 +186,27 @@ const HomePage = () => {
                         <div className="video-overlay"></div>
                     </div>
                     <div className="hero-3d" ref={hero3dRef}></div>
-                    <div className="container hero-content">
+                    
+                    {/* --- 5. JSX-ൽ ഡൈനാമിക് കണ്ടന്റ് റെൻഡർ ചെയ്യുന്നു --- */}
+                    {/* key={currentIndex} എന്നത് പ്രധാനമാണ്. ഇത് React-നോട് കണ്ടന്റ് മാറിയെന്ന് പറയുന്നു */}
+                    <div className="container hero-content" key={currentIndex}>
                         <h1 className="hero-title">
-                            <span className="title-line">From Classroom to Career</span>
-                            <span className="title-line orange-text">Engineer Your Future with Us</span>
+                            <span className="title-line">{heroContents[currentIndex].title1}</span>
+                            {/* രണ്ടാമത്തെ തലക്കെട്ട് ഉണ്ടെങ്കിൽ മാത്രം കാണിക്കുക */}
+                            {heroContents[currentIndex].title2 && (
+                                <span className="title-line orange-text">{heroContents[currentIndex].title2}</span>
+                            )}
                         </h1>
-                        <p className="hero-description">
-                            SkillvateTech is the Industry 5.0 finishing school in Kochi that transforms your academic knowledge into career-ready expertise.
-                        </p>
-                        
+                        {/* വിവരണം ഉണ്ടെങ്കിൽ മാത്രം കാണിക്കുക */}
+                        {heroContents[currentIndex].description && (
+                            <p className="hero-description">
+                                {heroContents[currentIndex].description}
+                            </p>
+                        )}
                     </div>
                 </section>
                 
+                {/* --- ബാക്കിയുള്ള സെക്ഷനുകളിൽ മാറ്റമൊന്നുമില്ല --- */}
                 <section className="section about-intro">
                     <div className="container">
                         <div className="section-header">
@@ -272,15 +341,13 @@ const HomePage = () => {
                     <h2 className="orange-text">Ready to Engineer Your Future?</h2>
                     <p>Take the first step towards a successful career. Apply for our next batch today.</p>
                     <div className="cta-actions">
-                        {/* --- മാറ്റം ഇവിടെയാണ് --- */}
-                        {/* ലിങ്ക് /admission#apply-now എന്നാക്കി മാറ്റി */}
                         <Link to="/admission#apply-now" className="btn btn-primary">
-                           <i className="fas fa-paper-plane"></i> Apply Now
+                            <i className="fas fa-paper-plane"></i> Apply Now
                         </Link>
                     </div>
                 </div>
-            </section>
-        </main>
+                </section>
+            </main>
         </>
     );
 };
